@@ -24,17 +24,14 @@ package org.teiid.modeshape.sequencer.vdb;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNull.notNullValue;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-
 import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-
 import org.junit.Test;
 import org.teiid.modeshape.sequencer.vdb.VdbDataRole.Permission;
 import org.teiid.modeshape.sequencer.vdb.VdbModel.Severity;
@@ -182,39 +179,54 @@ public class VdbManifestTest {
             assertTrue(dataRole.getMappedRoleNames().contains("Hammer"));
 
             // permissions
-            assertThat(dataRole.getPermissions().size(), is(3));
+            assertThat(dataRole.getPermissions().size(), is(4));
 
             { // permission 1
                 Permission perm1 = dataRole.getPermissions().get(0);
                 assertThat(perm1.getResourceName(), is("BooksProcedures"));
-                assertFalse(perm1.canCreate());
-                assertTrue(perm1.canRead());
-                assertTrue(perm1.canUpdate());
-                assertTrue(perm1.canDelete());
-                assertFalse(perm1.canExecute());
-                assertFalse(perm1.canAlter());
+                assertTrue(perm1.canCreate().isFalse());
+                assertTrue(perm1.canRead().isTrue());
+                assertTrue(perm1.canUpdate().isTrue());
+                assertTrue(perm1.canDelete().isTrue());
+                assertTrue(perm1.canExecute().isFalse());
+                assertTrue(perm1.canAlter().isFalse());
+                assertThat( perm1.useLanguage().isFalse(), is( true ) );
             }
 
             { // permission 2
                 Permission perm2 = dataRole.getPermissions().get(1);
                 assertThat(perm2.getResourceName(), is("sysadmin"));
-                assertFalse(perm2.canCreate());
-                assertTrue(perm2.canRead());
-                assertFalse(perm2.canUpdate());
-                assertFalse(perm2.canDelete());
-                assertFalse(perm2.canExecute());
-                assertFalse(perm2.canAlter());
+                assertTrue(perm2.canCreate().isFalse());
+                assertTrue(perm2.canRead().isTrue());
+                assertTrue(perm2.canUpdate().isFalse());
+                assertTrue(perm2.canDelete().isFalse());
+                assertTrue(perm2.canExecute().isFalse());
+                assertTrue(perm2.canAlter().isFalse());
+                assertThat( perm2.useLanguage().isUnset(), is( true ) );
             }
 
             { // permission 3
                 Permission perm3 = dataRole.getPermissions().get(2);
                 assertThat(perm3.getResourceName(), is("MyBooks"));
-                assertFalse(perm3.canCreate());
-                assertTrue(perm3.canRead());
-                assertTrue(perm3.canUpdate());
-                assertTrue(perm3.canDelete());
-                assertFalse(perm3.canExecute());
-                assertFalse(perm3.canAlter());
+                assertTrue(perm3.canCreate().isFalse());
+                assertTrue(perm3.canRead().isTrue());
+                assertTrue(perm3.canUpdate().isTrue());
+                assertTrue(perm3.canDelete().isTrue());
+                assertTrue(perm3.canExecute().isFalse());
+                assertTrue(perm3.canAlter().isFalse());
+                assertThat( perm3.useLanguage().isUnset(), is( true ) );
+            }
+
+            { // permission 4
+                Permission perm4 = dataRole.getPermissions().get( 3 );
+                assertThat( perm4.getResourceName(), is( "MyBooksView" ) );
+                assertThat( perm4.canCreate().isUnset(), is( true ) );
+                assertThat( perm4.canRead().isTrue(), is( true ) );
+                assertThat( perm4.canUpdate().isUnset(), is( true ) );
+                assertThat( perm4.canDelete().isUnset(), is( true ) );
+                assertThat( perm4.canExecute().isUnset(), is( true ) );
+                assertThat( perm4.canAlter().isUnset(), is( true ) );
+                assertThat( perm4.useLanguage().isUnset(), is( true ) );
             }
         }
 

@@ -50,6 +50,7 @@ import org.teiid.modeshape.sequencer.vdb.VdbModel.ValidationMarker;
 import org.teiid.modeshape.sequencer.vdb.lexicon.CoreLexicon;
 import org.teiid.modeshape.sequencer.vdb.lexicon.VdbLexicon;
 import org.teiid.modeshape.sequencer.vdb.lexicon.VdbLexicon.DataRole;
+import org.teiid.modeshape.util.TriState;
 
 /**
  * An exporter for VDBs.
@@ -299,13 +300,83 @@ public class VdbExporter extends AbstractExporter {
 
                                     for ( final Node permissionNode : permissionNodes ) {
                                         final Permission permission = dataRole.new Permission( dataRoleNode.getName() );
-                                        permission.allowAlter( permissionNode.getProperty( VdbLexicon.DataRole.Permission.ALLOW_ALTER ).getBoolean() );
-                                        permission.allowCreate( permissionNode.getProperty( VdbLexicon.DataRole.Permission.ALLOW_CREATE ).getBoolean() );
-                                        permission.allowDelete( permissionNode.getProperty( VdbLexicon.DataRole.Permission.ALLOW_DELETE ).getBoolean() );
-                                        permission.allowExecute( permissionNode.getProperty( VdbLexicon.DataRole.Permission.ALLOW_EXECUTE ).getBoolean() );
-                                        permission.allowLanguage( permissionNode.getProperty( VdbLexicon.DataRole.Permission.ALLOW_LANGUAGE ).getBoolean() );
-                                        permission.allowRead( permissionNode.getProperty( VdbLexicon.DataRole.Permission.ALLOW_READ ).getBoolean() );
-                                        permission.allowUpdate( permissionNode.getProperty( VdbLexicon.DataRole.Permission.ALLOW_UPDATE ).getBoolean() );
+                                        
+                                        { // allow alter
+                                            Boolean value = null;
+                                            
+                                            if ( permissionNode.hasProperty( VdbLexicon.DataRole.Permission.ALLOW_ALTER ) ) {
+                                                value = permissionNode.getProperty( VdbLexicon.DataRole.Permission.ALLOW_ALTER )
+                                                                      .getBoolean();
+                                            }
+                                            
+                                            permission.allowAlter( TriState.valueOf( value ) );
+                                        }
+                                        
+                                        { // allow create
+                                            Boolean value = null;
+                                            
+                                            if ( permissionNode.hasProperty( VdbLexicon.DataRole.Permission.ALLOW_CREATE ) ) {
+                                                value = permissionNode.getProperty( VdbLexicon.DataRole.Permission.ALLOW_CREATE )
+                                                                      .getBoolean();
+                                            }
+                                            
+                                            permission.allowCreate( TriState.valueOf( value ) );
+                                        }
+                                        
+                                        { // allow delete
+                                            Boolean value = null;
+                                            
+                                            if ( permissionNode.hasProperty( VdbLexicon.DataRole.Permission.ALLOW_DELETE ) ) {
+                                                value = permissionNode.getProperty( VdbLexicon.DataRole.Permission.ALLOW_DELETE )
+                                                                      .getBoolean();
+                                            }
+                                            
+                                            permission.allowDelete( TriState.valueOf( value ) );
+                                        }
+                                        
+                                        { // allow execute
+                                            Boolean value = null;
+                                            
+                                            if ( permissionNode.hasProperty( VdbLexicon.DataRole.Permission.ALLOW_EXECUTE ) ) {
+                                                value = permissionNode.getProperty( VdbLexicon.DataRole.Permission.ALLOW_EXECUTE )
+                                                                      .getBoolean();
+                                            }
+                                            
+                                            permission.allowExecute( TriState.valueOf( value ) );
+                                        }
+                                        
+                                        { // allow language
+                                            Boolean value = null;
+                                            
+                                            if ( permissionNode.hasProperty( VdbLexicon.DataRole.Permission.ALLOW_LANGUAGE ) ) {
+                                                value = permissionNode.getProperty( VdbLexicon.DataRole.Permission.ALLOW_LANGUAGE )
+                                                                      .getBoolean();
+                                            }
+                                            
+                                            permission.allowLanguage( TriState.valueOf( value ) );
+                                        }
+                                        
+                                        { // allow read
+                                            Boolean value = null;
+                                            
+                                            if ( permissionNode.hasProperty( VdbLexicon.DataRole.Permission.ALLOW_READ ) ) {
+                                                value = permissionNode.getProperty( VdbLexicon.DataRole.Permission.ALLOW_READ )
+                                                                      .getBoolean();
+                                            }
+                                            
+                                            permission.allowRead( TriState.valueOf( value ) );
+                                        }
+                                        
+                                        { // allow update
+                                            Boolean value = null;
+                                            
+                                            if ( permissionNode.hasProperty( VdbLexicon.DataRole.Permission.ALLOW_UPDATE  ) ) {
+                                                value = permissionNode.getProperty( VdbLexicon.DataRole.Permission.ALLOW_UPDATE )
+                                                                      .getBoolean();
+                                            }
+                                            
+                                            permission.allowUpdate( TriState.valueOf( value ) );
+                                        }
 
                                         { // conditions
                                             final Node[] conditionNodes = findChildrenWithType( permissionNode,
@@ -657,35 +728,54 @@ public class VdbExporter extends AbstractExporter {
                                     xmlWriter.writeCharacters( permission.getResourceName() );
                                     xmlWriter.writeEndElement();
 
-                                    // allow create
-                                    xmlWriter.writeStartElement( VdbLexicon.ManifestIds.ALLOW_CREATE );
-                                    xmlWriter.writeCharacters( Boolean.toString( permission.canCreate() ) );
-                                    xmlWriter.writeEndElement();
+                                    // create
+                                    if ( !permission.canCreate().isUnset() ) {
+                                        xmlWriter.writeStartElement( VdbLexicon.ManifestIds.ALLOW_CREATE );
+                                        xmlWriter.writeCharacters( Boolean.toString( permission.canCreate().booleanValue() ) );
+                                        xmlWriter.writeEndElement();
+                                    }
 
                                     // read
-                                    xmlWriter.writeStartElement( VdbLexicon.ManifestIds.ALLOW_READ );
-                                    xmlWriter.writeCharacters( Boolean.toString( permission.canRead() ) );
-                                    xmlWriter.writeEndElement();
+                                    if ( !permission.canRead().isUnset() ) {
+                                        xmlWriter.writeStartElement( VdbLexicon.ManifestIds.ALLOW_READ );
+                                        xmlWriter.writeCharacters( Boolean.toString( permission.canRead().booleanValue() ) );
+                                        xmlWriter.writeEndElement();
+                                    }
 
                                     // update
-                                    xmlWriter.writeStartElement( VdbLexicon.ManifestIds.ALLOW_UPDATE );
-                                    xmlWriter.writeCharacters( Boolean.toString( permission.canUpdate() ) );
-                                    xmlWriter.writeEndElement();
+                                    if ( !permission.canUpdate().isUnset() ) {
+                                        xmlWriter.writeStartElement( VdbLexicon.ManifestIds.ALLOW_UPDATE );
+                                        xmlWriter.writeCharacters( Boolean.toString( permission.canUpdate().booleanValue() ) );
+                                        xmlWriter.writeEndElement();
+                                    }
 
                                     // delete
-                                    xmlWriter.writeStartElement( VdbLexicon.ManifestIds.ALLOW_DELETE );
-                                    xmlWriter.writeCharacters( Boolean.toString( permission.canDelete() ) );
-                                    xmlWriter.writeEndElement();
+                                    if ( !permission.canDelete().isUnset() ) {
+                                        xmlWriter.writeStartElement( VdbLexicon.ManifestIds.ALLOW_DELETE );
+                                        xmlWriter.writeCharacters( Boolean.toString( permission.canDelete().booleanValue() ) );
+                                        xmlWriter.writeEndElement();
+                                    }
 
                                     // execute
-                                    xmlWriter.writeStartElement( VdbLexicon.ManifestIds.ALLOW_EXECUTE );
-                                    xmlWriter.writeCharacters( Boolean.toString( permission.canExecute() ) );
-                                    xmlWriter.writeEndElement();
+                                    if ( !permission.canExecute().isUnset() ) {
+                                        xmlWriter.writeStartElement( VdbLexicon.ManifestIds.ALLOW_EXECUTE );
+                                        xmlWriter.writeCharacters( Boolean.toString( permission.canExecute().booleanValue() ) );
+                                        xmlWriter.writeEndElement();
+                                    }
 
                                     // alter
-                                    xmlWriter.writeStartElement( VdbLexicon.ManifestIds.ALLOW_ALTER );
-                                    xmlWriter.writeCharacters( Boolean.toString( permission.canAlter() ) );
-                                    xmlWriter.writeEndElement();
+                                    if ( !permission.canAlter().isUnset() ) {
+                                        xmlWriter.writeStartElement( VdbLexicon.ManifestIds.ALLOW_ALTER );
+                                        xmlWriter.writeCharacters( Boolean.toString( permission.canAlter().booleanValue() ) );
+                                        xmlWriter.writeEndElement();
+                                    }
+
+                                    // language
+                                    if ( !permission.useLanguage().isUnset() ) {
+                                        xmlWriter.writeStartElement( VdbLexicon.ManifestIds.ALLOW_LANGUAGE );
+                                        xmlWriter.writeCharacters( Boolean.toString( permission.useLanguage().booleanValue() ) );
+                                        xmlWriter.writeEndElement();
+                                    }
 
                                     { // condition elements are optional
                                         final List< Condition > conditions = permission.getConditions();

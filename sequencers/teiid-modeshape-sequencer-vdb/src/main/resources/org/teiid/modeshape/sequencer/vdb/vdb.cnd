@@ -118,13 +118,13 @@
 
 // permission resource path is node path
 [vdb:permission] > nt:unstructured
- - vdb:allowCreate (boolean) = 'false' autocreated
- - vdb:allowRead (boolean) = 'false' autocreated
- - vdb:allowUpdate (boolean) = 'false' autocreated
- - vdb:allowDelete (boolean) = 'false' autocreated
- - vdb:allowExecute (boolean) = 'false' autocreated
- - vdb:allowAlter (boolean) = 'false' autocreated
- - vdb:allowLanguage (boolean) = 'false' autocreated
+ - vdb:allowCreate (boolean)
+ - vdb:allowRead (boolean)
+ - vdb:allowUpdate (boolean)
+ - vdb:allowDelete (boolean)
+ - vdb:allowExecute (boolean)
+ - vdb:allowAlter (boolean)
+ - vdb:allowLanguage (boolean)
  + vdb:conditions (vdb:conditions) = vdb:conditions copy
  + vdb:masks (vdb:masks) = vdb:masks copy
 

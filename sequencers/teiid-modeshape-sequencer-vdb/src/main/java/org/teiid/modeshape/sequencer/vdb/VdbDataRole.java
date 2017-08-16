@@ -26,6 +26,7 @@ import java.util.Collections;
 import java.util.List;
 import org.modeshape.common.util.CheckArg;
 import org.modeshape.common.util.StringUtil;
+import org.teiid.modeshape.util.TriState;
 
 /**
  * A simple POJO that is used to represent the information for a data role read in from a VDB manifest ("vdb.xml").
@@ -145,14 +146,14 @@ public class VdbDataRole implements Comparable<VdbDataRole> {
      */
     public class Permission {
 
-        private boolean alter;
-        private boolean create;
-        private boolean delete;
-        private boolean execute;
-        private boolean read;
+        private TriState alter;
+        private TriState create;
+        private TriState delete;
+        private TriState execute;
+        private TriState read;
         private final String resourceName;
-        private boolean update;
-        private boolean language;
+        private TriState update;
+        private TriState language;
         private List<Condition> conditions = Collections.emptyList();
         private List<Mask> masks = Collections.emptyList();
 
@@ -165,100 +166,100 @@ public class VdbDataRole implements Comparable<VdbDataRole> {
         }
 
         /**
-         * @param newValue the new allow-alter value
+         * @param newValue the new allow-alter value (can be <code>null</code> to unset)
          */
-        public void allowAlter( final boolean newValue ) {
-            this.alter = newValue;
+        public void allowAlter( final TriState newValue ) {
+            this.alter = ( newValue == null ) ? TriState.UNSET : newValue;
         }
 
         /**
-         * @param newValue the new allow-create value
+         * @param newValue the new allow-create value (can be <code>null</code> to unset)
          */
-        public void allowCreate( final boolean newValue ) {
-            this.create = newValue;
+        public void allowCreate( final TriState newValue ) {
+            this.create = ( newValue == null ) ? TriState.UNSET : newValue;
         }
 
         /**
-         * @param newValue the new allow-delete value
+         * @param newValue the new allow-delete value (can be <code>null</code> to unset)
          */
-        public void allowDelete( final boolean newValue ) {
-            this.delete = newValue;
+        public void allowDelete( final TriState newValue ) {
+            this.delete = ( newValue == null ) ? TriState.UNSET : newValue;
         }
 
         /**
-         * @param newValue the new allow-execute value
+         * @param newValue the new allow-execute value (can be <code>null</code> to unset)
          */
-        public void allowExecute( final boolean newValue ) {
-            this.execute = newValue;
+        public void allowExecute( final TriState newValue ) {
+            this.execute = ( newValue == null ) ? TriState.UNSET : newValue;
         }
 
         /**
-         * @param newValue the new allow-read value
+         * @param newValue the new allow-read value (can be <code>null</code> to unset)
          */
-        public void allowRead( final boolean newValue ) {
-            this.read = newValue;
+        public void allowRead( final TriState newValue ) {
+            this.read = ( newValue == null ) ? TriState.UNSET : newValue;
         }
 
         /**
-         * @param newValue the new allow-update value
+         * @param newValue the new allow-update value (can be <code>null</code> to unset)
          */
-        public void allowUpdate( final boolean newValue ) {
-            this.update = newValue;
+        public void allowUpdate( final TriState newValue ) {
+            this.update = ( newValue == null ) ? TriState.UNSET : newValue;
         }
 
         /**
-         * @param language
+         * @param newValue the new allow-language value (can be <code>null</code> to unset)
          */
-        public void allowLanguage(boolean language) {
-            this.language = language;
+        public void allowLanguage( final TriState newValue ) {
+            this.language = ( newValue == null ) ? TriState.UNSET : newValue;
         }
 
         /**
-         * @return <code>true</code> if the permission can alter
+         * @return the current value of the allow-alter property (never <code>null</code>)
          */
-        public boolean canAlter() {
+        public TriState canAlter() {
             return this.alter;
         }
 
         /**
-         * @return <code>true</code> if the permission can create
+         * @return the current value of the allow-create property (never <code>null</code>)
          */
-        public boolean canCreate() {
+        public TriState canCreate() {
             return this.create;
         }
 
         /**
-         * @return <code>true</code> if the permission can delete
+         * @return the current value of the allow-delete property (never <code>null</code>)
          */
-        public boolean canDelete() {
+        public TriState canDelete() {
             return this.delete;
         }
 
         /**
-         * @return <code>true</code> if the permission can execute
+         * @return the current value of the allow-execute property (never <code>null</code>)
          */
-        public boolean canExecute() {
+        public TriState canExecute() {
             return this.execute;
         }
 
         /**
-         * @return <code>true</code> if the permission can read
+         * @return the current value of the allow-read property (never <code>null</code>)
          */
-        public boolean canRead() {
+        public TriState canRead() {
             return this.read;
         }
 
         /**
-         * @return <code>true</code> if the permission can update
+         * @return the current value of the allow-update property (never <code>null</code>)
          */
-        public boolean canUpdate() {
+        public TriState canUpdate() {
             return this.update;
         }
 
         /**
-         * @return <code>true</code> if the permission allows languages
+         * @return the current value of the allow-language property (never <code>null</code>)
          */
-        public boolean useLanguage() {
+        public TriState useLanguage() {
             return this.language;
         }
 

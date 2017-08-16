@@ -42,6 +42,7 @@
             <allow-delete>true</allow-delete>
             <allow-execute>false</allow-execute>
             <allow-alter>false</allow-alter>
+            <allow-language>false</allow-language>
         </permission>
         <permission>
             <resource-name>sysadmin</resource-name>
@@ -60,6 +61,10 @@
             <allow-delete>true</allow-delete>
             <allow-execute>false</allow-execute>
             <allow-alter>false</allow-alter>
+        </permission>
+        <permission>
+            <resource-name>MyBooksView</resource-name>
+            <allow-read>true</allow-read>
         </permission>
         <mapped-role-name>Sledge</mapped-role-name>
         <mapped-role-name>Hammer</mapped-role-name>

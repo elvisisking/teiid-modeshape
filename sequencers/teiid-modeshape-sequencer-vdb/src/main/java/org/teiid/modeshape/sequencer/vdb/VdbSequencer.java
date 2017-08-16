@@ -335,13 +335,41 @@ public class VdbSequencer extends Sequencer {
                     for ( final Permission permission : permissionsGroup ) {
                         final Node permissionNode = permissionsGroupNode.addNode( permission.getResourceName(),
                                                                                   VdbLexicon.DataRole.Permission.PERMISSION );
-                        permissionNode.setProperty( VdbLexicon.DataRole.Permission.ALLOW_ALTER, permission.canAlter() );
-                        permissionNode.setProperty( VdbLexicon.DataRole.Permission.ALLOW_CREATE, permission.canCreate() );
-                        permissionNode.setProperty( VdbLexicon.DataRole.Permission.ALLOW_DELETE, permission.canDelete() );
-                        permissionNode.setProperty( VdbLexicon.DataRole.Permission.ALLOW_EXECUTE, permission.canExecute() );
-                        permissionNode.setProperty( VdbLexicon.DataRole.Permission.ALLOW_READ, permission.canRead() );
-                        permissionNode.setProperty( VdbLexicon.DataRole.Permission.ALLOW_UPDATE, permission.canUpdate() );
-                        permissionNode.setProperty( VdbLexicon.DataRole.Permission.ALLOW_LANGUAGE, permission.useLanguage() );
+
+                        if ( !permission.canAlter().isUnset() ) {
+                            permissionNode.setProperty( VdbLexicon.DataRole.Permission.ALLOW_ALTER, 
+                                                        permission.canAlter().booleanValue() );
+                        }
+
+                        if ( !permission.canCreate().isUnset() ) {
+                            permissionNode.setProperty( VdbLexicon.DataRole.Permission.ALLOW_CREATE, 
+                                                        permission.canCreate().booleanValue() );
+                        }
+
+                        if ( !permission.canDelete().isUnset() ) {
+                            permissionNode.setProperty( VdbLexicon.DataRole.Permission.ALLOW_DELETE, 
+                                                        permission.canDelete().booleanValue() );
+                        }
+
+                        if ( !permission.canExecute().isUnset() ) {
+                            permissionNode.setProperty( VdbLexicon.DataRole.Permission.ALLOW_EXECUTE, 
+                                                        permission.canExecute().booleanValue() );
+                        }
+
+                        if ( !permission.canRead().isUnset() ) {
+                            permissionNode.setProperty( VdbLexicon.DataRole.Permission.ALLOW_READ, 
+                                                        permission.canRead().booleanValue() );
+                        }
+
+                        if ( !permission.canUpdate().isUnset() ) {
+                            permissionNode.setProperty( VdbLexicon.DataRole.Permission.ALLOW_UPDATE, 
+                                                        permission.canUpdate().booleanValue() );
+                        }
+
+                        if ( !permission.useLanguage().isUnset() ) {
+                            permissionNode.setProperty( VdbLexicon.DataRole.Permission.ALLOW_LANGUAGE, 
+                                                        permission.useLanguage().booleanValue() );
+                        }
 
                         // add permission's conditions
                         List< Condition > conditions = permission.getConditions();

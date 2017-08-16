@@ -41,6 +41,7 @@ import org.teiid.modeshape.sequencer.vdb.VdbDataRole.Mask;
 import org.teiid.modeshape.sequencer.vdb.VdbDataRole.Permission;
 import org.teiid.modeshape.sequencer.vdb.VdbModel.Source;
 import org.teiid.modeshape.sequencer.vdb.lexicon.VdbLexicon;
+import org.teiid.modeshape.util.TriState;
 
 /**
  * The POJO for the vdb.xml file.
@@ -539,14 +540,14 @@ public class VdbManifest implements Comparable<VdbManifest> {
             }
 
             Permission permission = null;
-            boolean alter = false;
-            boolean create = false;
-            boolean delete = false;
-            boolean execute = false;
-            boolean read = false;
+            TriState alter = TriState.UNSET;
+            TriState create = TriState.UNSET;
+            TriState delete = TriState.UNSET;
+            TriState execute = TriState.UNSET;
+            TriState read = TriState.UNSET;
             String resourceName = null;
-            boolean update = false;
-            boolean language = false;
+            TriState update = TriState.UNSET;
+            TriState language = TriState.UNSET;
             List<Condition> conditions = new ArrayList<Condition>();
             List<Mask> masks = new ArrayList<Mask>();
 
@@ -559,19 +560,19 @@ public class VdbManifest implements Comparable<VdbManifest> {
                     if (VdbLexicon.ManifestIds.RESOURCE_NAME.equals(elementName)) {
                         resourceName = streamReader.getElementText();
                     } else if (VdbLexicon.ManifestIds.ALLOW_ALTER.equals(elementName)) {
-                        alter = Boolean.parseBoolean(streamReader.getElementText());
+                        alter = TriState.valueOf(Boolean.parseBoolean(streamReader.getElementText()));
                     } else if (VdbLexicon.ManifestIds.ALLOW_CREATE.equals(elementName)) {
-                        create = Boolean.parseBoolean(streamReader.getElementText());
+                        create = TriState.valueOf(Boolean.parseBoolean(streamReader.getElementText()));
                     } else if (VdbLexicon.ManifestIds.ALLOW_DELETE.equals(elementName)) {
-                        delete = Boolean.parseBoolean(streamReader.getElementText());
+                        delete = TriState.valueOf(Boolean.parseBoolean(streamReader.getElementText()));
                     } else if (VdbLexicon.ManifestIds.ALLOW_EXECUTE.equals(elementName)) {
-                        execute = Boolean.parseBoolean(streamReader.getElementText());
+                        execute = TriState.valueOf(Boolean.parseBoolean(streamReader.getElementText()));
                     } else if (VdbLexicon.ManifestIds.ALLOW_READ.equals(elementName)) {
-                        read = Boolean.parseBoolean(streamReader.getElementText());
+                        read = TriState.valueOf(Boolean.parseBoolean(streamReader.getElementText()));
                     } else if (VdbLexicon.ManifestIds.ALLOW_UPDATE.equals(elementName)) {
-                        update = Boolean.parseBoolean(streamReader.getElementText());
+                        update = TriState.valueOf(Boolean.parseBoolean(streamReader.getElementText()));
                     } else if (VdbLexicon.ManifestIds.ALLOW_LANGUAGE.equals(elementName)) {
-                        language = Boolean.parseBoolean(streamReader.getElementText());
+                        language = TriState.valueOf(Boolean.parseBoolean(streamReader.getElementText()));
                     } else if (VdbLexicon.ManifestIds.CONDITION.equals(elementName)) {
                         Condition condition = parseCondition(streamReader, dataRole);
                         assert (condition != null) : "condition is null";

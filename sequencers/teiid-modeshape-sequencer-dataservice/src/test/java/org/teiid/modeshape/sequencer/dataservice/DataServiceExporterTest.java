@@ -156,7 +156,7 @@ public final class DataServiceExporterTest extends AbstractSequencerTest {
         options.set( OptionName.EXPORT_ARTIFACT, ExportArtifact.DATA_SERVICE_AS_FILES );
         final Result result = exporter.execute( dataServiceNode, options );
         assertThat( result, is( notNullValue() ) );
-        assertThat( result.getError(), is( nullValue() ) );
+        assertThat( result.getErrorMessage(), result.getError(), is( nullValue() ) );
         assertThat( result.getErrorMessage(), is( nullValue() ) );
         assertThat( result.getOutcome(), is( instanceOf( result.getType() ) ) );
 
@@ -214,7 +214,7 @@ public final class DataServiceExporterTest extends AbstractSequencerTest {
         final DataServiceExporter exporter = new DataServiceExporter();
         final Result result = exporter.execute( dataServiceNode, null );
         assertThat( result, is( notNullValue() ) );
-        assertThat( result.getError(), is( nullValue() ) );
+        assertThat( result.getErrorMessage(), result.getError(), is( nullValue() ) );
         assertThat( result.getErrorMessage(), is( nullValue() ) );
         assertThat( result.getOutcome(), is( instanceOf( result.getType() ) ) );
 
